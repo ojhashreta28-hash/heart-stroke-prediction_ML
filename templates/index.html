@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardioPulse AI - Heart Stroke Risk Predictor</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Panel -->
+        <aside class="sidebar" id="sidebar-panel">
+            <div class="logo-area">
+                <svg class="heart-pulse-icon animate-pulse" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#heartGrad)" stroke="none"/>
+                    <path d="M6 9h3l2-4 2 8 2-6 2 2h3" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="heartGrad" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#f43f5e" />
+                            <stop offset="100%" stop-color="#b91c1c" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1 id="app-main-title">CardioPulse AI</h1>
+            </div>
+            
+            <p class="tagline">Advanced predictive analytics engine for coronary condition assessment and early stroke risk identification.</p>
+
+            <div class="info-card">
+                <h3>About the Model</h3>
+                <p>This diagnostic tool is powered by a K-Nearest Neighbors (KNN) classifier. It evaluates multiple cardiovascular clinical parameters to estimate the probability of cardiac arrest or stroke risk.</p>
+            </div>
+
+            <div class="medical-glossary">
+                <h3>Clinical Terminology Guide</h3>
+                
+                <details class="glossary-item" id="glossary-st-slope">
+                    <summary>ST Slope Explained</summary>
+                    <div class="details-content">
+                        <p>The ST segment of an ECG represents the period when the ventricles are depolarized. During stress testing:</p>
+                        <ul>
+                            <li><strong>Up (Upsloping):</strong> Typically normal, indicating healthy blood flow during exertion.</li>
+                            <li><strong>Flat (Flat):</strong> Often a sign of myocardial ischemia (restricted blood flow).</li>
+                            <li><strong>Down (Downsloping):</strong> Strong indicator of coronary artery disease.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="glossary-item" id="glossary-oldpeak">
+                    <summary>Old Peak & ST Depression</summary>
+                    <div class="details-content">
+                        <p>ST depression induced by exercise relative to rest. Higher values (measured in mm) indicate higher degrees of cardiac strain and potential arterial blockages.</p>
+                    </div>
+                </details>
+
+                <details class="glossary-item" id="glossary-resting-ecg">
+                    <summary>Resting ECG States</summary>
+                    <div class="details-content">
+                        <ul>
+                            <li><strong>Normal:</strong> Normal resting electrical pattern.</li>
+                            <li><strong>ST:</strong> Having ST-T wave abnormality (T wave inversions and/or ST elevation/depression).</li>
+                            <li><strong>LVH:</strong> Showing probable or definite left ventricular hypertrophy.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="glossary-item" id="glossary-chest-pain">
+                    <summary>Chest Pain Types</summary>
+                    <div class="details-content">
+                        <ul>
+                            <li><strong>TA:</strong> Typical Angina (chest pain related to decreased blood flow).</li>
+                            <li><strong>ATA:</strong> Atypical Angina (chest discomfort without classic symptoms).</li>
+                            <li><strong>NAP:</strong> Non-Anginal Pain (sharp chest pain unrelated to the heart).</li>
+                            <li><strong>ASY:</strong> Asymptomatic (no chest pain symptoms, often critical to screen).</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+            
+            <footer class="sidebar-footer">
+                <p>&copy; 2026 CardioPulse Labs. All clinical decisions must be verified by a medical professional.</p>
+            </footer>
+        </aside>
+
+        <!-- Main Dashboard Panel -->
+        <main class="main-content">
+            <header class="top-nav" id="top-navigation">
+                <div class="nav-title">Diagnostic Dashboard</div>
+                <div class="system-status">
+                    <span class="status-dot green"></span> Engine Online
+                </div>
+            </header>
+
+            <div class="dashboard-body">
+                <form id="prediction-form" class="prediction-form">
+                    
+                    <div class="cards-grid">
+                        
+                        <!-- Card 1: Demographics -->
+                        <section class="form-card" id="card-demographics">
+                            <div class="card-header">
+                                <span class="card-number">01</span>
+                                <h2>Demographic Profile</h2>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <div class="slider-container">
+                                    <input type="range" id="age" name="age" min="18" max="100" value="40" class="custom-slider">
+                                    <span class="slider-val" id="age-val">40</span>
+                                    <span class="unit">years</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sex">Biological Sex</label>
+                                <div class="segmented-control" id="sex-control">
+                                    <input type="radio" id="sex-male" name="sex" value="Male" checked>
+                                    <label for="sex-male">Male</label>
+                                    
+                                    <input type="radio" id="sex-female" name="sex" value="Female">
+                                    <label for="sex-female">Female</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fasting_bs">Fasting Blood Sugar</label>
+                                <span class="field-desc">Is fasting blood sugar > 120 mg/dL?</span>
+                                <div class="segmented-control" id="fasting-bs-control">
+                                    <input type="radio" id="fbs-no" name="fasting_bs" value="0" checked>
+                                    <label for="fbs-no">No (&le; 120 mg/dL)</label>
+                                    
+                                    <input type="radio" id="fbs-yes" name="fasting_bs" value="1">
+                                    <label for="fbs-yes">Yes (&gt; 120 mg/dL)</label>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Card 2: Clinical Vitals -->
+                        <section class="form-card" id="card-vitals">
+                            <div class="card-header">
+                                <span class="card-number">02</span>
+                                <h2>Clinical Vitals</h2>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="resting_bp">Resting Blood Pressure</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="resting_bp" name="resting_bp" min="80" max="200" value="120" required>
+                                    <span class="input-unit">mmHg</span>
+                                </div>
+                                <span class="helper-text">Normal resting pressure is around 120/80 mmHg.</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cholestrol">Serum Cholesterol</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="cholestrol" name="cholestrol" min="100" max="600" value="200" required>
+                                    <span class="input-unit">mg/dL</span>
+                                </div>
+                                <span class="helper-text">Target level is less than 200 mg/dL.</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="max_hr">Max Heart Rate Achieved</label>
+                                <div class="slider-container">
+                                    <input type="range" id="max_hr" name="max_hr" min="60" max="220" value="150" class="custom-slider">
+                                    <span class="slider-val" id="max_hr-val">150</span>
+                                    <span class="unit">bpm</span>
+                                </div>
+                                <span class="helper-text">Maximum beats per minute achieved during stress test.</span>
+                            </div>
+                        </section>
+
+                        <!-- Card 3: Electrocardiogram & Stress -->
+                        <section class="form-card" id="card-ecg">
+                            <div class="card-header">
+                                <span class="card-number">03</span>
+                                <h2>Cardiogram & Stress Tests</h2>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pain">Chest Pain Type</label>
+                                <select id="pain" name="pain" class="custom-select" required>
+                                    <option value="ASY" selected>Asymptomatic (ASY)</option>
+                                    <option value="ATA">Atypical Angina (ATA)</option>
+                                    <option value="NAP">Non-Anginal Pain (NAP)</option>
+                                    <option value="TA">Typical Angina (TA)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="resting_ecg">Resting ECG Results</label>
+                                <select id="resting_ecg" name="resting_ecg" class="custom-select" required>
+                                    <option value="Normal" selected>Normal</option>
+                                    <option value="ST">ST-T Wave Abnormality</option>
+                                    <option value="LVH">Left Ventricular Hypertrophy (LVH)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exercise_angina">Exercise Induced Angina</label>
+                                <div class="segmented-control" id="angina-control">
+                                    <input type="radio" id="angina-no" name="exercise_angina" value="No" checked>
+                                    <label for="angina-no">No</label>
+                                    
+                                    <input type="radio" id="angina-yes" name="exercise_angina" value="Yes">
+                                    <label for="angina-yes">Yes</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="oldpeak">ST Depression (Oldpeak)</label>
+                                <div class="slider-container">
+                                    <input type="range" id="oldpeak" name="oldpeak" min="0.0" max="6.0" step="0.1" value="1.0" class="custom-slider">
+                                    <span class="slider-val" id="oldpeak-val">1.0</span>
+                                    <span class="unit">mm</span>
+                                </div>
+                                <span class="helper-text">Value range: 0.0 - 6.0 mm.</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="st_slope">ST Slope Type</label>
+                                <select id="st_slope" name="st_slope" class="custom-select" required>
+                                    <option value="Up">Upsloping (Up)</option>
+                                    <option value="Flat" selected>Flat (Flat)</option>
+                                    <option value="Down">Downsloping (Down)</option>
+                                </select>
+                            </div>
+                        </section>
+                        
+                    </div>
+
+                    <div class="action-section">
+                        <button type="submit" class="submit-btn" id="submit-prediction-btn">
+                            <span class="btn-text">Generate Cardiac Assessment</span>
+                            <div class="btn-loader hidden" id="btn-loader">
+                                <div class="pulse-line"></div>
+                            </div>
+                        </button>
+                    </div>
+
+                </form>
+
+                <!-- Dynamic Assessment Results Section -->
+                <section class="results-section hidden" id="results-panel">
+                    <div class="results-card" id="results-card-element">
+                        <div class="results-header">
+                            <h2>Clinical Evaluation Summary</h2>
+                            <button class="close-results-btn" id="close-results-btn" aria-label="Close prediction summary">&times;</button>
+                        </div>
+                        
+                        <div class="results-content-layout">
+                            <!-- Left: Gauge/Indicator -->
+                            <div class="gauge-column">
+                                <div class="gauge-container">
+                                    <svg class="gauge-svg" viewBox="0 0 100 100">
+                                        <circle class="gauge-bg" cx="50" cy="50" r="40" />
+                                        <circle class="gauge-fill" id="gauge-fill-circle" cx="50" cy="50" r="40" />
+                                    </svg>
+                                    <div class="gauge-text-overlay">
+                                        <span class="gauge-percent" id="risk-percentage-val">0%</span>
+                                        <span class="gauge-label">Stroke Risk</span>
+                                    </div>
+                                </div>
+                                <div class="verdict-pill" id="verdict-badge">Evaluating...</div>
+                            </div>
+
+                            <!-- Right: Analysis/Recommendation -->
+                            <div class="analysis-column">
+                                <h3 class="assessment-verdict" id="assessment-main-headline">Condition Report</h3>
+                                <p class="verdict-desc" id="verdict-detailed-description">Analyzing parameters...</p>
+                                
+                                <div class="risk-factors-container hidden" id="risk-factors-container">
+                                    <h4>Identified Risk Anomalies:</h4>
+                                    <ul class="risk-factors-list" id="risk-factors-list">
+                                        <!-- Dynamically generated list items -->
+                                    </ul>
+                                </div>
+
+                                <div class="clinical-suggestions">
+                                    <h4>Target Actions & Care Plan:</h4>
+                                    <ul class="suggestions-list" id="suggestions-list">
+                                        <!-- Dynamically generated list items -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="results-warning-note">
+                            <svg class="warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            <p><strong>Disclaimer:</strong> This application utilizes a statistical model trained on historical data. It does not replace professional cardiological consultations, ECG tests, or medical diagnosis. If you are experiencing chest tightness or breathing difficulties, please call emergency services immediately.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <script src="/static/script.js"></script>
+</body>
+</html>
