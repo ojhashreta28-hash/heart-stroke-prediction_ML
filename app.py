@@ -113,4 +113,17 @@ def predict():
         return jsonify({'error': str(e)}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    import sys
+    # Check if the application was executed via streamlit
+    if any('streamlit' in arg for arg in sys.argv):
+        print("\n" + "="*75)
+        print(" CARDIO PULSE AI - SYSTEM MESSAGE")
+        print("="*75)
+        print(" This application has been upgraded to a premium Flask web server.")
+        print(" Please start the server by running:")
+        print("   python app.py")
+        print("\n Do not use 'streamlit run app.py' as it conflicts with the new backend.")
+        print("="*75 + "\n")
+        sys.exit(1)
+    else:
+        app.run(debug=True, host='0.0.0.0', port=5000)
